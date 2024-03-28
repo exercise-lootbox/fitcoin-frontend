@@ -1,17 +1,21 @@
 import './App.css';
-import { HashRouter } from "react-router-dom";
-import { Routes, Route, Navigate } from "react-router"
-import Profile from './Profile';
-import Search from './Search';
-import Details from './Details';
-import Home from './Home';
-import Login from './Login';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { HashRouter } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router';
+import Profile from './pages/Profile';
+import Search from './pages/Search';
+import Details from './pages/Details';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { setAuthToken, setUserId, setUser, resetUser } from './Login/userReducer';
+import {
+  setAuthToken,
+  setUserId,
+  setUser,
+  resetUser
+} from './pages/Login/userReducer';
 import StravaConnect from './Integrations/Strava';
-import * as useClient from './Login/userClient';
-
+import * as useClient from './pages/Login/userClient';
 
 function FitCoin() {
   const auth = getAuth();
@@ -22,8 +26,8 @@ function FitCoin() {
     if (user) {
       const token = await user.getIdToken();
       const userId = user.uid;
-      dispatch(setAuthToken(token))
-      dispatch(setUserId(userId))
+      dispatch(setAuthToken(token));
+      dispatch(setUserId(userId));
 
       /*Get the user's info from our database.
       Note: This could fail upon signup due to a race condition,
@@ -32,12 +36,9 @@ function FitCoin() {
       try {
         const userDb = await useClient.getUser(userId, token);
         dispatch(setUser(userDb));
-      } catch {
-
-      }
-
+      } catch {}
     } else {
-      dispatch(resetUser())
+      dispatch(resetUser());
     }
   });
 
